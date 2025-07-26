@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login / Register / Forgot Password</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 320px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    input[type="submit"] {
+      background: #007bff;
+      color: white;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background: #0056b3;
+    }
+
+    .toggle-link {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .toggle-link a {
+      color: #007bff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .toggle-link a:hover {
+      text-decoration: underline;
+    }
+
+    .forgot-link {
+      text-align: center;
+      margin-top: -8px;
+      margin-bottom: 15px;
+      font-size: 13px;
+    }
+
+    .forgot-link a {
+      color: #007bff;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .forgot-link a:hover {
+      text-decoration: none;
+    }
+
+    /* Styles for forgot password buttons */
+    .forgot-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .forgot-buttons a {
+      display: block;
+      text-align: center;
+      padding: 10px;
+      border-radius: 4px;
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .forgot-buttons a.email-btn {
+      background-color: #007bff;
+    }
+
+    .forgot-buttons a.email-btn:hover {
+      background-color: #007bff;
+    }
+
+    .forgot-buttons a.phone-btn {
+      background-color: #007bff;
+    }
+
+    .forgot-buttons a.phone-btn:hover {
+      background-color:#007bff;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="login-form">
+    <h2>Login</h2>
+    <form>
+      <input type="text" placeholder="Username" required />
+      <input type="password" placeholder="Password" required />
+      <div class="forgot-link">
+        <a onclick="toggleForm('forgot')">Forgot Password?</a>
+      </div>
+      <input type="submit" value="Login" />
+    </form>
+    <div class="toggle-link">
+      <p>Don't have an account? <a onclick="toggleForm('register')">Register here</a></p>
+    </div>
+  </div>
+
+  <div class="container" id="register-form" style="display: none;">
+    <h2>Register</h2>
+    <form>
+      <input type="text" placeholder="Username" required />
+      <input type="email" placeholder="Email" required />
+      <input type="password" placeholder="Password" required />
+      <input type="password" placeholder="Confirm Password" required />
+      <input type="submit" value="Register" />
+    </form>
+    <div class="toggle-link">
+      <p>Already have an account? <a onclick="toggleForm('login')">Login here</a></p>
+    </div>
+  </div>
+
+  <div class="container" id="forgot-form" style="display: none;">
+    <h2>Forgot Password</h2>
+    <p style="text-align: center; margin-bottom: 20px;">Choose a method to reset your password:</p>
+
+    <div class="forgot-buttons">
+      <a href="enter-email.html" class="email-btn">Reset via Email</a>
+      <a href="enter-phone.html" class="phone-btn">Reset via Phone Number</a>
+    </div>
+
+    <div class="toggle-link" style="margin-top: 20px;">
+      <p>Remembered your password? <a onclick="toggleForm('login')">Login here</a></p>
+    </div>
+  </div>
+
+  <script>
+    function toggleForm(type) {
+      document.getElementById('login-form').style.display = 'none';
+      document.getElementById('register-form').style.display = 'none';
+      document.getElementById('forgot-form').style.display = 'none';
+
+      if(type === 'login') {
+        document.getElementById('login-form').style.display = 'block';
+      } else if(type === 'register') {
+        document.getElementById('register-form').style.display = 'block';
+      } else if(type === 'forgot') {
+        document.getElementById('forgot-form').style.display = 'block';
+      }
+    }
+  </script>
+
+</body>
+</html>
