@@ -1,21 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 typedef struct {
     int id;
     char title[50];
     char author[50];
     int quantity;
 } Book;
+
 FILE *fptr;
+
 // Function declarations
 void menu();
 void addBook();
 void viewBooks();
 void issueBook();
 void returnBook();
+void editBook();
 void searchBook();
 void removeBook();
+
 int main() {
     menu();
     return 0;
@@ -29,20 +34,23 @@ void menu() {
         printf("2. View Books\n");
         printf("3. Issue Book\n");
         printf("4. Return Book\n");
-        printf("5. Search Book\n");
-        printf("6. Remove Book\n");
-        printf("7. Exit\n");
+        printf("5. Edit Book\n"); // New option
+        printf("6. Search Book\n");
+        printf("7. Remove Book\n");
+        printf("8. Exit\n"); // Exit moved to 8
         printf("Enter your choice: ");
         scanf("%d", &choice);
         getchar(); // consume newline
+
         switch(choice) {
             case 1: addBook(); break;
             case 2: viewBooks(); break;
             case 3: issueBook(); break;
             case 4: returnBook(); break;
-            case 5: searchBook(); break;
-            case 6: removeBook(); break;
-            case 7: printf("Exiting...\n"); exit(0);
+            case 5: editBook(); break;
+            case 6: searchBook(); break;
+            case 7: removeBook(); break;
+            case 8: printf("Exiting...\n"); exit(0);
             default: printf("Invalid choice. Try again.\n");
         }
     }
@@ -52,9 +60,11 @@ void addBook() {
     Book book, tempBook;
     int idExists = 0;
     char line[200];
+
     printf("Enter Book ID: ");
     scanf("%d", &book.id);
     getchar();
+
     fptr = fopen("library.txt", "r");
     if (fptr != NULL) {
         while (fgets(line, sizeof(line), fptr)) {
@@ -66,23 +76,29 @@ void addBook() {
         }
         fclose(fptr);
     }
+
     if (idExists) {
         printf("Book ID already exists. Please use a unique ID.\n");
         return;
     }
+
     printf("Enter Book Title: ");
     fgets(book.title, sizeof(book.title), stdin);
     book.title[strcspn(book.title, "\n")] = 0;
+
     printf("Enter Book Author: ");
     fgets(book.author, sizeof(book.author), stdin);
     book.author[strcspn(book.author, "\n")] = 0;
+
     printf("Enter Quantity: ");
     scanf("%d", &book.quantity);
+
     fptr = fopen("library.txt", "a");
     if (fptr == NULL) {
         printf("Error opening file.\n");
         return;
     }
+
     fprintf(fptr, "%d\t%s\t%s\t%d\n", book.id, book.title, book.author, book.quantity);
     fclose(fptr);
     printf("Book added successfully!\n");
@@ -96,12 +112,15 @@ void viewBooks() {
         printf("No books found.\n");
         return;
     }
+
     printf("\n%-10s %-30s %-20s %-10s\n", "Book ID", "Title", "Author", "Quantity");
     printf("---------------------------------------------------------------\n");
+
     while (fgets(line, sizeof(line), fptr)) {
         sscanf(line, "%d\t%[^\t]\t%[^\t]\t%d", &book.id, book.title, book.author, &book.quantity);
         printf("%-10d %-30s %-20s %-10d\n", book.id, book.title, book.author, book.quantity);
     }
+
     fclose(fptr);
 }
 
@@ -110,19 +129,23 @@ void issueBook() {
     Book book;
     char line[200];
     FILE *temp;
+
     printf("Enter Book ID to issue: ");
     scanf("%d", &id);
+
     fptr = fopen("library.txt", "r");
     if (fptr == NULL) {
         printf("No books available.\n");
         return;
     }
+
     temp = fopen("temp.txt", "w");
     if (temp == NULL) {
         printf("Error opening temp file.\n");
         fclose(fptr);
         return;
     }
+
     while (fgets(line, sizeof(line), fptr)) {
         sscanf(line, "%d\t%[^\t]\t%[^\t]\t%d", &book.id, book.title, book.author, &book.quantity);
         if (book.id == id) {
@@ -136,10 +159,12 @@ void issueBook() {
         }
         fprintf(temp, "%d\t%s\t%s\t%d\n", book.id, book.title, book.author, book.quantity);
     }
+
     fclose(fptr);
     fclose(temp);
     remove("library.txt");
     rename("temp.txt", "library.txt");
+
     if (!found)
         printf("Book not found.\n");
 }
@@ -149,8 +174,10 @@ void returnBook() {
     Book book;
     char line[200];
     FILE *temp;
+
     printf("Enter Book ID to return: ");
     scanf("%d", &id);
+
     fptr = fopen("library.txt", "r");
     if (fptr == NULL) {
         printf("No books found.\n");
@@ -163,6 +190,7 @@ void returnBook() {
         fclose(fptr);
         return;
     }
+
     while (fgets(line, sizeof(line), fptr)) {
         sscanf(line, "%d\t%[^\t]\t%[^\t]\t%d", &book.id, book.title, book.author, &book.quantity);
         if (book.id == id) {
@@ -172,36 +200,111 @@ void returnBook() {
         }
         fprintf(temp, "%d\t%s\t%s\t%d\n", book.id, book.title, book.author, book.quantity);
     }
+
     fclose(fptr);
     fclose(temp);
     remove("library.txt");
     rename("temp.txt", "library.txt");
+
     if (!found)
         printf("Book not found.\n");
+}
+
+void editBook() {
+    int id, found = 0;
+    Book book;
+    char line[200];
+    FILE *temp;
+
+    printf("Enter Book ID to edit: ");
+    scanf("%d", &id);
+    getchar(); // consume newline
+
+    fptr = fopen("library.txt", "r");
+    if (fptr == NULL) {
+        printf("No books found.\n");
+        return;
+    }
+
+    temp = fopen("temp.txt", "w");
+    if (temp == NULL) {
+        printf("Error opening temporary file.\n");
+        fclose(fptr);
+        return;
+    }
+
+    while (fgets(line, sizeof(line), fptr)) {
+        sscanf(line, "%d\t%[^\t]\t%[^\t]\t%d", &book.id, book.title, book.author, &book.quantity);
+
+        if (book.id == id) {
+            found = 1;
+            printf("Editing Book ID %d:\n", id);
+
+            printf("Current Title: %s\n", book.title);
+            printf("Enter New Title (leave blank to keep current): ");
+            char newTitle[50];
+            fgets(newTitle, sizeof(newTitle), stdin);
+            newTitle[strcspn(newTitle, "\n")] = 0;
+            if (strlen(newTitle) > 0)
+                strcpy(book.title, newTitle);
+
+            printf("Current Author: %s\n", book.author);
+            printf("Enter New Author (leave blank to keep current): ");
+            char newAuthor[50];
+            fgets(newAuthor, sizeof(newAuthor), stdin);
+            newAuthor[strcspn(newAuthor, "\n")] = 0;
+            if (strlen(newAuthor) > 0)
+                strcpy(book.author, newAuthor);
+
+            printf("Current Quantity: %d\n", book.quantity);
+            printf("Enter New Quantity (negative to keep current): ");
+            int newQty;
+            scanf("%d", &newQty);
+            getchar();
+            if (newQty >= 0)
+                book.quantity = newQty;
+
+            printf("Book updated successfully.\n");
+        }
+
+        fprintf(temp, "%d\t%s\t%s\t%d\n", book.id, book.title, book.author, book.quantity);
+    }
+
+    fclose(fptr);
+    fclose(temp);
+    remove("library.txt");
+    rename("temp.txt", "library.txt");
+
+    if (!found)
+        printf("Book with ID %d not found.\n", id);
 }
 
 void searchBook() {
     int id, found = 0;
     Book book;
     char line[200];
+
     printf("Enter Book ID to search: ");
     scanf("%d", &id);
+
     fptr = fopen("library.txt", "r");
     if (fptr == NULL) {
         printf("No books found.\n");
         return;
     }
+
     while (fgets(line, sizeof(line), fptr)) {
         sscanf(line, "%d\t%[^\t]\t%[^\t]\t%d", &book.id, book.title, book.author, &book.quantity);
         if (book.id == id) {
             found = 1;
             printf("\nBook Found:\n");
-            printf("ID: %d\nTitle: %s\nAuthor: %s\nQuantity: %d\n",
-                   book.id, book.title, book.author, book.quantity);
+            printf("ID: %d\nTitle: %s\nAuthor: %s\nQuantity: %d\n", book.id, book.title, book.author, book.quantity);
             break;
         }
     }
+
     fclose(fptr);
+
     if (!found)
         printf("Book not found.\n");
 }
@@ -235,7 +338,6 @@ void removeBook() {
     }
     fclose(fptr);
     fclose(temp);
-
     remove("library.txt");
     rename("temp.txt", "library.txt");
 
