@@ -48,6 +48,26 @@
       transform: translateY(-5px);
       box-shadow: 0 6px 12px rgba(0,0,0,0.15);
     }
+
+    .back-button {
+  display: block;
+  width: 120px;
+  margin: 30px auto 0;
+  padding: 10px;
+  background-color: transparent;  /* transparent background */
+  color: #131414;                 /* black text */
+  border: 2px solid #131414;     /* black border */
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #131414;      /* black background on hover */
+  color: white;                   /* white text on hover */
+}
+
   </style>
 </head>
 <body>
@@ -75,6 +95,8 @@
         <p>Engaging and original content tailored to your audience and goals.</p>
       </div>
     </div>
+    <!-- Go Back Button -->
+    <button class="back-button" onclick="history.back()">← Go Back</button>
   </main>
 </body>
 </html>
