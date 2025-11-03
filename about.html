@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About - My Simple Website</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f0f0f0;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background: #0a49e9;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    p {
+      font-size: 18px;
+      margin: 20px 0;
+    }
+
+    .back-button {
+  display: block;
+  width: 120px;
+  margin: 30px auto 0;
+  padding: 10px;
+  background-color: transparent;  /* transparent background */
+  color: #0a49e9;                 /* blue text */
+  border: 2px solid #0a49e9;     /* blue border */
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #0a49e9;      /* blue background on hover */
+  color: white;                   /* white text on hover */
+}
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>About Us</h1>
+  </header>
+
+  <main>
+    <h2>Who We Are?</h2>
+    <p>Welcome to our Website! We are dedicated to providing high-quality web design and development services tailored to meet the unique needs of each client. Our mission is to help businesses and individuals establish a strong online presence with professional, responsive, and engaging websites.</p>
+    <p>Our team consists of experienced designers, developers, and consultants who are passionate about what they do. We focus on delivering customized solutions that drive growth, improve user experience, and boost your brand's impact in the digital world.</p>
+    <p>Thank you for visiting our site. We look forward to helping you achieve your online goals.</p>
+    <!-- Go Back Button -->
+    <button class="back-button" onclick="history.back()">← Go Back</button>
+  </main>
+</body>
+</html>
